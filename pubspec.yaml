@@ -37,10 +37,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   rename_app: ^1.1.0
-  sqflite: ^2.1.0+1
+  sqflite: ^2.2.2
   path: ^1.8.2
   bloc: ^8.1.0
   flutter_bloc: ^8.1.1
+  ubuntu_font_flutter: ^0.0.1
 
 dev_dependencies:
   flutter_test:
@@ -58,7 +59,40 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  fonts:
+    - family: Ubuntu
+      fonts:
+        - asset: packages/ubuntu_font_flutter/Ubuntu-R.ttf
+        - asset: packages/ubuntu_font_flutter/Ubuntu-RI.ttf
+          style: italic
+        - asset: packages/ubuntu_font_flutter/Ubuntu-B.ttf
+          weight: 700
+        - asset: packages/ubuntu_font_flutter/Ubuntu-BI.ttf
+          weight: 700
+          style: italic
+        - asset: packages/ubuntu_font_flutter/Ubuntu-L.ttf
+          weight: 300
+        - asset: packages/ubuntu_font_flutter/Ubuntu-LI.ttf
+          weight: 300
+          style: italic
+        - asset: packages/ubuntu_font_flutter/Ubuntu-M.ttf
+          weight: 500
+        - asset: packages/ubuntu_font_flutter/Ubuntu-MI.ttf
+          weight: 500
+          style: italic
+    - family: Ubuntu Mono
+      fonts:
+        - asset: packages/ubuntu_font_flutter/UbuntuMono-R.ttf
+        - asset: packages/ubuntu_font_flutter/UbuntuMono-RI.ttf
+          style: italic
+        - asset: packages/ubuntu_font_flutter/UbuntuMono-B.ttf
+          weight: 700
+        - asset: packages/ubuntu_font_flutter/UbuntuMono-BI.ttf
+          weight: 700
+          style: italic
+    - family: Ubuntu Condensed
+      fonts:
+        - asset: packages/ubuntu_font_flutter/Ubuntu-C.ttf
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
