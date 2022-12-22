@@ -19,19 +19,41 @@ class DatabaseHandler {
           ");"
         );
         await database.execute(
+          "CREATE TABLE IF NOT EXISTS spe ("
+            "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+            "name TEXT NOT NULL"
+          ");"
+        );
+        await database.execute(
           "CREATE TABLE IF NOT EXISTS thing ("
             "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
             "name TEXT NOT NULL,"
             "idCategorie INTEGER NULL,"
+            "idSpe INTEGER NULL,"
             "episode INTEGER NULL,"
             "season INTEGER NULL,"
             "chapter INTEGER NULL,"
             "tome INTEGER NULL,"
             "FOREIGN KEY(idCategorie) REFERENCES category(id)"
+            "FOREIGN KEY(idSpe) REFERENCES spe(id)"
           ");"
         );
       },
       version: 1,
+    );
+  }
+  Future<void> deleteDatabase() async {
+    String path = await getDatabasesPath();
+    await File(join(path, dbname)).delete();
+  }
+
+  Future createTableSpe() async {
+    final db = await initializeDB();
+    await db.execute(
+      "CREATE TABLE IF NOT EXISTS spe ("
+        "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+        "name TEXT NOT NULL"
+      ");"
     );
   }
   Future createTableCategory() async {
@@ -50,17 +72,15 @@ class DatabaseHandler {
         "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
         "name TEXT NOT NULL,"
         "idCategorie INTEGER NULL,"
+        "idSpe INTEGER NULL,"
         "episode INTEGER NULL,"
         "season INTEGER NULL,"
         "chapter INTEGER NULL,"
         "tome INTEGER NULL,"
         "FOREIGN KEY(idCategorie) REFERENCES category(id)"
+        "FOREIGN KEY(idSpe) REFERENCES spe(id)"
       ");"
     );
-  }
-  Future<void> deleteDatabase() async {
-    String path = await getDatabasesPath();
-    await File(join(path, dbname)).delete();
   }
   Future deleteTableCategory() async {
     var db = await initializeDB();
@@ -69,6 +89,42 @@ class DatabaseHandler {
   Future deleteTableThing() async {
     var db = await initializeDB();
     await db.execute("DROP TABLE IF EXISTS thing");
+  }
+  Future deleteTableSpe() async {
+    var db = await initializeDB();
+    await db.execute("DROP TABLE IF EXISTS spe");
+  }
+
+  Future insertSpe(Spe spe) async {
+    var db = await initializeDB();
+    await db.insert('spe', spe.toMap());
+  }
+  Future updateSpe(Spe spe) async {
+    var db = await initializeDB();
+    await db.update('spe', spe.toMap(), where: 'id = ?', whereArgs: [spe.id]);
+  }
+  Future deleteSpe(Spe spe) async {
+    var db = await initializeDB();
+    await db.delete('spe', where: 'id = ?', whereArgs: [spe.id]);
+  }
+  Future deleteAllSpe() async {
+    var db = await initializeDB();
+    await db.delete('spe');
+  }
+  Future<List<Spe>> getAllSpe() async {
+    var db = await initializeDB();
+    var result = await db.query('spe');
+    return result.map((e) => Spe.fromBdd(e)).toList();
+  }
+  Future<Spe> getSpeFromName(String name) async {
+    var db = await initializeDB();
+    var result = await db.query('spe', where: 'name = ?', whereArgs: [name]);
+    return Spe.fromBdd(result.first);
+  }
+  Future getSpeFromId(int id) async {
+    var db = await initializeDB();
+    var result = await db.query('spe', where: 'id = ?', whereArgs: [id]);
+    return Spe.fromBdd(result.first);
   }
 
   Future<void> insertThing(Thing thing) async {

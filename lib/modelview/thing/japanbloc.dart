@@ -57,10 +57,12 @@ class ChangeThingEvent extends JapanEvent {
 abstract class JapanState {
   List<Thing> things;
   List<Category> categories;
+  List<Spe> spes;
 
   List<Thing> allThings;
   List<Category> allCategories;
 
+  Spe currentSpe;
   Category currentCategory;
   Thing currentThing;
   final DatabaseHandler handler;
@@ -72,20 +74,27 @@ abstract class JapanState {
     required this.allCategories,
     required this.allThings,
     required this.currentCategory,
-    required this.currentThing
+    required this.currentThing,
+    required this.spes,
+    required this.currentSpe
   });
 }
 class InitState extends JapanState {
-  InitState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing});
+  InitState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing, required super.spes, required super.currentSpe});
 
   init() async {
     List<Thing> newtThings = await handler.getThings();
     List<Category> newCategories = await handler.getCategories();
+    List<Spe> newSpes = await handler.getAllSpe();
+
+    spes.clear();
     things.clear();
-    allThings.clear();
-    allCategories.clear();
     categories.clear();
 
+    allThings.clear();
+    allCategories.clear();
+
+    spes.addAll(newSpes);
     things.addAll(newtThings);
     categories.addAll(newCategories);
 
@@ -95,7 +104,7 @@ class InitState extends JapanState {
 }
 
 class AddedCategoryState extends JapanState {
-  AddedCategoryState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing});
+  AddedCategoryState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing, required super.spes, required super.currentSpe});
 
   Future add(Category category) async {
     categories.add(category);
@@ -104,7 +113,7 @@ class AddedCategoryState extends JapanState {
   }
 }
 class RemovedCategoryState extends JapanState {
-  RemovedCategoryState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing});
+  RemovedCategoryState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing, required super.spes, required super.currentSpe});
 
   Future remove(Category category) async {
     Category categoryF = categories.singleWhere((element) => category.name == element.name);
@@ -114,7 +123,7 @@ class RemovedCategoryState extends JapanState {
   }
 }
 class SelectedCategoryState extends JapanState {
-  SelectedCategoryState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing});
+  SelectedCategoryState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing, required super.spes, required super.currentSpe});
 
   changeThings(Category category) {
     if(category.name == "") {
@@ -128,7 +137,7 @@ class SelectedCategoryState extends JapanState {
 }
 
 class AddedThingState extends JapanState {
-  AddedThingState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing});
+  AddedThingState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing, required super.spes, required super.currentSpe});
 
   Future add(Thing thing) async {
     things.add(thing);
@@ -137,7 +146,7 @@ class AddedThingState extends JapanState {
   }
 }
 class RemovedThingState extends JapanState {
-  RemovedThingState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing});
+  RemovedThingState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing, required super.spes, required super.currentSpe});
 
   Future remove(Thing thing) async {
     Thing thingF = allThings.singleWhere((element) => thing.name == element.name);
@@ -147,13 +156,13 @@ class RemovedThingState extends JapanState {
   }
 }
 class SearchedThingState extends JapanState {
-  SearchedThingState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing});
+  SearchedThingState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing, required super.spes, required super.currentSpe});
 }
 class SelectedThingState extends JapanState {
-  SelectedThingState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing});
+  SelectedThingState({required super.things, required super.categories, required super.currentCategory, required super.handler, required super.allCategories, required super.allThings, required super.currentThing, required super.spes, required super.currentSpe});
 }
 class ChangedThingState extends JapanState {
-  ChangedThingState({required super.things, required super.categories, required super.handler, required super.allCategories, required super.allThings, required super.currentCategory, required super.currentThing});
+  ChangedThingState({required super.things, required super.categories, required super.handler, required super.allCategories, required super.allThings, required super.currentCategory, required super.currentThing, required super.spes, required super.currentSpe});
 
   Future change(Thing thing) async {
     await handler.updateThing(thing);
@@ -161,7 +170,7 @@ class ChangedThingState extends JapanState {
 }
 
 class JapanBloc extends Bloc<JapanEvent, JapanState>{
-  JapanBloc() : super(InitState(things: [], categories: [], currentCategory: Category.empty(), handler: DatabaseHandler(), allCategories: [], allThings: [], currentThing: Thing.empty())) {
+  JapanBloc() : super(InitState(things: [], categories: [], currentCategory: Category.empty(), handler: DatabaseHandler(), allCategories: [], allThings: [], currentThing: Thing.empty(), spes: [], currentSpe: Spe.empty())) {
     on<JapanEvent>(onJapanEvent);
   }
 
@@ -175,7 +184,9 @@ class JapanBloc extends Bloc<JapanEvent, JapanState>{
           currentThing: state.currentThing,
           handler: state.handler,
           allCategories: state.allCategories,
-          allThings: state.allThings
+          allThings: state.allThings,
+          spes: state.spes,
+          currentSpe: state.currentSpe
         );
         await nextState.init();
         emit(nextState);
@@ -185,9 +196,11 @@ class JapanBloc extends Bloc<JapanEvent, JapanState>{
           things: state.things,
           categories: state.categories,
           currentCategory: state.currentCategory,
-            currentThing: state.currentThing,
+          currentThing: state.currentThing,
           handler: state.handler,
           allCategories: state.allCategories,
+          spes: state.spes,
+          currentSpe: state.currentSpe,
           allThings: state.allThings
         );
         await nextState.add((event as AddCategoryEvent).category);
@@ -198,9 +211,11 @@ class JapanBloc extends Bloc<JapanEvent, JapanState>{
           things: state.things,
           categories: state.categories,
           currentCategory: state.currentCategory,
-            currentThing: state.currentThing,
+          currentThing: state.currentThing,
           handler: state.handler,
           allCategories: state.allCategories,
+          spes: state.spes,
+          currentSpe: state.currentSpe,
           allThings: state.allThings
         );
         await nextState.remove((event as RemoveCategoryEvent).category);
@@ -211,9 +226,11 @@ class JapanBloc extends Bloc<JapanEvent, JapanState>{
           things: state.things,
           categories: state.categories,
           currentCategory: state.currentCategory,
-            currentThing: state.currentThing,
+          currentThing: state.currentThing,
           handler: state.handler,
           allCategories: state.allCategories,
+          spes: state.spes,
+          currentSpe: state.currentSpe,
           allThings: state.allThings
         );
         await nextState.add((event as AddThingEvent).thing);
@@ -224,9 +241,11 @@ class JapanBloc extends Bloc<JapanEvent, JapanState>{
           things: state.things,
           categories: state.categories,
           currentCategory: state.currentCategory,
-            currentThing: state.currentThing,
+          currentThing: state.currentThing,
           handler: state.handler,
           allCategories: state.allCategories,
+          spes: state.spes,
+          currentSpe: state.currentSpe,
           allThings: state.allThings
         );
         await nextState.remove((event as RemoveThingEvent).thing);
@@ -237,9 +256,11 @@ class JapanBloc extends Bloc<JapanEvent, JapanState>{
           things: state.things,
           categories: state.categories,
           currentCategory: (event as SelectCategoryEvent).category,
-            currentThing: state.currentThing,
+          currentThing: state.currentThing,
           handler: state.handler,
           allCategories: state.allCategories,
+          spes: state.spes,
+          currentSpe: state.currentSpe,
           allThings: state.allThings
         );
         nextState.changeThings(event.category);
@@ -253,6 +274,8 @@ class JapanBloc extends Bloc<JapanEvent, JapanState>{
           currentThing: state.currentThing,
           handler: state.handler,
           allCategories: state.allCategories,
+          spes: state.spes,
+          currentSpe: state.currentSpe,
           allThings: state.allThings
         );
         emit(nextState);
@@ -265,6 +288,8 @@ class JapanBloc extends Bloc<JapanEvent, JapanState>{
           currentThing: (event as SelectThingEvent).thing,
           handler: state.handler,
           allCategories: state.allCategories,
+          spes: state.spes,
+          currentSpe: state.currentSpe,
           allThings: state.allThings
         );
         emit(nextState);
@@ -277,6 +302,8 @@ class JapanBloc extends Bloc<JapanEvent, JapanState>{
           currentThing: state.currentThing,
           handler: state.handler,
           allCategories: state.allCategories,
+          spes: state.spes,
+          currentSpe: state.currentSpe,
           allThings: state.allThings
         );
         await nextState.change((event as ChangeThingEvent).thing);

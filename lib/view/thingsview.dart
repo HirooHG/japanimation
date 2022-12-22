@@ -39,19 +39,58 @@ class ThingsView extends StatelessWidget {
             children: [
               BlocBuilder<JapanBloc, JapanState>(
                 builder: (context, state) {
-                  return SizedBox(
-                    height: height * 0.15,
-                    child: Center(
-                      child: Text(
-                        (state.currentCategory.name == '') ? "All" : state.currentCategory.name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Ubuntu"
+                  var spes = state.spes;
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: height * 0.15,
+                        child: Center(
+                          child: Text(
+                            (state.currentCategory.name == '') ? "All" : state.currentCategory.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "Ubuntu"
+                            ),
+                          )
                         ),
+                      ),
+                      SizedBox(
+                        width: width,
+                        height: height * 0.1,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: spes.length,
+                          itemBuilder: (context, index) {
+                            Spe spe = spes[index];
+                            return Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 10),
+                              height: height * 0.2,
+                              child: Center(
+                                child: ChoiceChip(
+                                  label: Text(spe.name,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Ubuntu"
+                                    )
+                                  ),
+                                  onSelected: (selected) {
+                                    if(state.currentSpe == spe) {
+                                    }
+                                    else {
+                                    }
+                                  },
+                                  selectedColor: const Color(0xFF42d392),
+                                  selected: state.currentSpe == spe
+                                ),
+                              )
+                            );
+                          }
+                        )
                       )
-                    ),
+                    ],
                   );
                 },
               ),
@@ -93,7 +132,7 @@ class ThingsView extends StatelessWidget {
                 child: BlocBuilder<JapanBloc, JapanState>(
                   builder: (context, state) {
                     var searchedThings = <Thing>[];
-                    searchedThings.addAll(state.things);
+                    searchedThings.addAll(state.things.where((element) => element.idSpe == state.currentSpe.id));
                     searchedThings.retainWhere((s){
                       return s.name.contains(searchThing.toLowerCase());
                     });

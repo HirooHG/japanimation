@@ -41,7 +41,6 @@ dependencies:
   path: ^1.8.2
   bloc: ^8.1.0
   flutter_bloc: ^8.1.1
-  ubuntu_font_flutter: ^0.0.1
 
 dev_dependencies:
   flutter_test:
@@ -62,37 +61,37 @@ flutter:
   fonts:
     - family: Ubuntu
       fonts:
-        - asset: packages/ubuntu_font_flutter/Ubuntu-R.ttf
-        - asset: packages/ubuntu_font_flutter/Ubuntu-RI.ttf
+        - asset: assets/ubuntu/Ubuntu-R.ttf
+        - asset: assets/ubuntu/Ubuntu-RI.ttf
           style: italic
-        - asset: packages/ubuntu_font_flutter/Ubuntu-B.ttf
+        - asset: assets/ubuntu/Ubuntu-B.ttf
           weight: 700
-        - asset: packages/ubuntu_font_flutter/Ubuntu-BI.ttf
+        - asset: assets/ubuntu/Ubuntu-BI.ttf
           weight: 700
           style: italic
-        - asset: packages/ubuntu_font_flutter/Ubuntu-L.ttf
+        - asset: assets/ubuntu/Ubuntu-L.ttf
           weight: 300
-        - asset: packages/ubuntu_font_flutter/Ubuntu-LI.ttf
+        - asset: assets/ubuntu/Ubuntu-LI.ttf
           weight: 300
           style: italic
-        - asset: packages/ubuntu_font_flutter/Ubuntu-M.ttf
+        - asset: assets/ubuntu/Ubuntu-M.ttf
           weight: 500
-        - asset: packages/ubuntu_font_flutter/Ubuntu-MI.ttf
+        - asset: assets/ubuntu/Ubuntu-MI.ttf
           weight: 500
           style: italic
     - family: Ubuntu Mono
       fonts:
-        - asset: packages/ubuntu_font_flutter/UbuntuMono-R.ttf
-        - asset: packages/ubuntu_font_flutter/UbuntuMono-RI.ttf
+        - asset: assets/ubuntu/UbuntuMono-R.ttf
+        - asset: assets/ubuntu/UbuntuMono-RI.ttf
           style: italic
-        - asset: packages/ubuntu_font_flutter/UbuntuMono-B.ttf
+        - asset: assets/ubuntu/UbuntuMono-B.ttf
           weight: 700
-        - asset: packages/ubuntu_font_flutter/UbuntuMono-BI.ttf
+        - asset: assets/ubuntu/UbuntuMono-BI.ttf
           weight: 700
           style: italic
     - family: Ubuntu Condensed
       fonts:
-        - asset: packages/ubuntu_font_flutter/Ubuntu-C.ttf
+        - asset: assets/ubuntu/Ubuntu-C.ttf
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -4,6 +4,7 @@ class Thing {
 
   int? id;
   int? idCategorie;
+  int? idSpe;
   int? episode;
   int? season;
   int? chapter;
@@ -12,6 +13,7 @@ class Thing {
   Thing({
     required this.name,
     this.idCategorie,
+    this.idSpe,
     this.id,
     this.episode,
     this.season,
@@ -24,6 +26,7 @@ class Thing {
     idCategorie: map['idCategorie'],
     name: map['name'],
     id: map['id'],
+    idSpe: map['idSpe'],
     episode: map['episode'],
     season: map['season'],
     chapter: map['chapter'],
@@ -38,6 +41,7 @@ class Thing {
       'episode': episode,
       'season': season,
       'chapter': chapter,
+      'idSpe' : idSpe,
       'tome': tome,
     };
   }
@@ -49,7 +53,8 @@ class Thing {
         && episode == other.episode
         && season == other.season
         && chapter == other.chapter
-        && tome == other.tome;
+        && tome == other.tome
+        && idSpe == other.idSpe;
   }
 }
 class Category {
@@ -76,5 +81,31 @@ class Category {
   @override
   bool operator ==(Object other) {
     return name == (other as Category).name;
+  }
+}
+class Spe {
+  int? id;
+  String name;
+
+  Spe({
+    required this.name,
+    this.id
+  });
+  Spe.empty() : this(name: '');
+  Spe.fromBdd(Map<String, dynamic> map) : this(
+    name: map['name'],
+    id: map['id'],
+  );
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return name == (other as Spe).name;
   }
 }
