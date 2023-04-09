@@ -130,6 +130,7 @@ class ThingView extends StatelessWidget {
                       value: categories.singleWhere((element) => element.id == state.currentThing.idCategorie) ?? Category.empty(),
                       items: categories.map((e) {
                         return DropdownMenuItem<Category>(
+                          key: Key("key${e.name}"),
                           value: e,
                           child: Text(
                             (e.name == "") ? "No categorie" : e.name,
