@@ -1,4 +1,4 @@
-package fr.HirooDebug.japanimationbloc
+package fr.HirooHG.japanimationbloc
 
 import io.flutter.embedding.android.FlutterActivity
 
