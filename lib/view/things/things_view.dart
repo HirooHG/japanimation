@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'homeview.dart';
-import 'package:japanimationbloc/modelview/thing/japanbloc.dart';
-import 'package:japanimationbloc/modelview/thing/thing.dart';
-import 'package:japanimationbloc/modelview/thing/japancubit.dart';
-import 'thingview.dart';
+import 'package:japanimationbloc/view/home/home_view.dart';
+import 'package:japanimationbloc/view/thing/thing_view.dart';
+import 'package:japanimationbloc/modelview/bloc/japan_bloc.dart';
+import 'package:japanimationbloc/modelview/cubit/japan_cubit.dart';
+import 'package:japanimationbloc/modelview/entities/thing.dart';
 
 class ThingsView extends StatelessWidget {
   ThingsView({super.key});

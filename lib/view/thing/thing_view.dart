@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:japanimationbloc/modelview/thing/japanbloc.dart';
-import 'package:japanimationbloc/modelview/thing/thing.dart';
+import 'package:japanimationbloc/modelview/bloc/japan_bloc.dart';
+import 'package:japanimationbloc/modelview/entities/thing.dart';
 
 class ThingView extends StatelessWidget {
   ThingView({super.key});

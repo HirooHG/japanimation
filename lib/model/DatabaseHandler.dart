@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:japanimationbloc/modelview/thing/thing.dart';
+import 'package:japanimationbloc/modelview/entities/thing.dart';
 import 'dart:io';
 
 class DatabaseHandler {

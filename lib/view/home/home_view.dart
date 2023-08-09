@@ -2,35 +2,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:japanimationbloc/modelview/thing/japanbloc.dart';
+import 'package:japanimationbloc/modelview/bloc/japan_bloc.dart';
+import 'package:japanimationbloc/modelview/entities/thing.dart';
+import 'package:japanimationbloc/modelview/cubit/japan_cubit.dart';
 import 'package:japanimationbloc/model/DatabaseHandler.dart';
-import 'package:japanimationbloc/modelview/thing/thing.dart';
-import 'package:japanimationbloc/modelview/thing/japancubit.dart';
-import 'thingsview.dart';
-import 'thingview.dart';
+import 'package:japanimationbloc/view/general/app_bar.dart';
+import 'package:japanimationbloc/view/things/things_view.dart';
+import 'package:japanimationbloc/view/thing/thing_view.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
 
-  late double width;
-  late double height;
   late final handler = DatabaseHandler();
-
-  bool isLoaded = false;
 
   @override
   Widget build(BuildContext context) {
-
-    width = MediaQuery.of(context).size.width;
-    height = MediaQuery.of(context).size.height;
-
-    //handler.initializeDB().then((db) async {
-    //});
-
-    if(!isLoaded) {
-      BlocProvider.of<JapanBloc>(context).add(const InitEvent());
-      isLoaded = true;
-    }
 
     return Scaffold(
       floatingActionButton: MultiBlocProvider(
@@ -40,42 +26,21 @@ class HomeView extends StatelessWidget {
         ],
         child: FloatingButtons(tag: "homeview")
       ),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(64),
+        child: CusAppBar(),
+      ),
       body: SafeArea(
+        top: false,
         child: Container(
           color: const Color(0xFF1a1a1a),
           child: Column(
             children: [
-              Container(
-                width: double.infinity,
-                height: height * 0.2,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF2f2f2f),
-                ),
-                child: Center(
-                  child: Text(
-                    "Japanimation",
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Ubuntu",
-                      foreground: Paint()
-                        ..shader = const LinearGradient(
-                          colors: <Color>[
-                            Color(0xFF42d392),
-                            Color(0xFF4fb2bd),
-                            Color(0xFF5f8bee),
-                          ],
-                      ).createShader(const Rect.fromLTWH(0.0, 100.0, 350.0, 70.0)),
-                    ),
-                  )
-                )
-              ),
               BlocBuilder<JapanBloc, JapanState>(
                 builder: (context, state) {
                   List<Category> categories = state.categories;
                   return SizedBox(
-                    width: width,
-                    height: height * 0.1,
+                    height: 64,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: categories.length,
@@ -83,7 +48,7 @@ class HomeView extends StatelessWidget {
                         Category category = categories[index];
                         return Container(
                           margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: height * 0.2,
+                          height: 32,
                           child: Center(
                             child: ChoiceChip(
                               label: Text(category.name,
@@ -494,6 +459,7 @@ class FloatingButtons extends StatelessWidget {
         FloatingActionButton(
           heroTag: "add$tag",
           backgroundColor: const Color(0xFF2a2a2a),
+          foregroundColor: Colors.white,
           elevation: 5.0,
           child: const Icon(Icons.add),
           onPressed: () {
@@ -503,6 +469,7 @@ class FloatingButtons extends StatelessWidget {
         const SizedBox(height: 10),
         FloatingActionButton(
           heroTag: "remove$tag",
+          foregroundColor: Colors.white,
           backgroundColor: const Color(0xFF2a2a2a),
           child: const Icon(Icons.remove),
           onPressed: () {
