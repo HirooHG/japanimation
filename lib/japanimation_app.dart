@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:japanimationbloc/view/home/home_view.dart';
-import 'package:japanimationbloc/modelview/bloc/japan_bloc.dart';
-import 'package:japanimationbloc/modelview/cubit/japan_cubit.dart';
+import 'package:japanimationbloc/common/theme/theme/theme_dark.dart';
+import 'package:japanimationbloc/common/theme/theme/theme_light.dart';
+import 'package:japanimationbloc/common/nav/router.dart';
 
 class JapanimationApp extends StatelessWidget {
   const JapanimationApp({super.key});
@@ -11,18 +11,14 @@ class JapanimationApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<JapanBloc>(
-          create: (_) => JapanBloc()
-            ..add(const InitEvent())
-        ),
-        BlocProvider<ModifyJapanCubit>(
-          create: (_) => ModifyJapanCubit(),
-        )
+      providers: const [
       ],
-      child: MaterialApp(
-        home: HomeView()
-      ),
+      child: MaterialApp.router(
+        themeMode: ThemeMode.light,
+        theme: themeLight,
+        darkTheme: themeDark,
+        routerConfig: router,
+      )
     );
   }
 }
