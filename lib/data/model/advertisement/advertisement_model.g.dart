@@ -8,7 +8,7 @@ part of 'advertisement_model.dart';
 
 AdvertisementModel _$AdvertisementModelFromJson(Map<String, dynamic> json) =>
     AdvertisementModel(
-      id: json['id'] as int,
+      id: json['_id'] as String,
       name: json['name'] as String,
       category: json['category'] == null
           ? null
@@ -20,7 +20,7 @@ AdvertisementModel _$AdvertisementModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$AdvertisementModelToJson(AdvertisementModel instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'name': instance.name,
       'category': instance.category,
       'spe': instance.spe,

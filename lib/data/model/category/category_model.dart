@@ -6,11 +6,10 @@ part 'category_model.g.dart';
 
 @JsonSerializable()
 class CategoryModel extends BaseModel {
-  final String id;
   final String name;
 
   const CategoryModel({
-    required this.id,
+    required super.id,
     required this.name,
   });
 

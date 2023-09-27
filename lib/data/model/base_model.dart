@@ -4,7 +4,11 @@ import 'package:japanimationbloc/domain/entities/base_entity.dart';
 
 abstract class BaseModel<T extends BaseEntity> extends Equatable {
 
-  const BaseModel();
+  const BaseModel({
+    required this.id
+  });
+
+  final String id;
 
   Map<String, dynamic> toJson();
 

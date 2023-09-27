@@ -9,14 +9,12 @@ part 'advertisement_model.g.dart';
 
 @JsonSerializable()
 class AdvertisementModel extends BaseModel {
-
-  final int id;
   final String name;
   final Category? category;
   final Spe? spe;
 
   const AdvertisementModel({
-    required this.id,
+    required super.id,
     required this.name,
     this.category,
     this.spe,

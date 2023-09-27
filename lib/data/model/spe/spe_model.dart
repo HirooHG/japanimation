@@ -6,11 +6,10 @@ part 'spe_model.g.dart';
 
 @JsonSerializable()
 class SpeModel extends BaseModel {
-  final String id;
   final String name;
 
   const SpeModel({
-    required this.id,
+    required super.id,
     required this.name,
   });
 

@@ -5,12 +5,10 @@ part 'category.g.dart';
 
 @JsonSerializable()
 class Category extends BaseEntity {
-  final String id;
   final String name;
 
   const Category({
-    required this.id,
-    required this.name,
+    required super.id, required this.name,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
@@ -21,8 +19,7 @@ class Category extends BaseEntity {
   @override
   bool operator ==(Object other) {
     return other is Category 
-      && other.id == id 
-      && other.name == name;
+      && other.id == id;
   }
 
   @override

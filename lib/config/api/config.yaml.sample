@@ -1,1 +1,3 @@
-address: 'https://api.com'
+address: https://api.com
+port: 22
+path: api

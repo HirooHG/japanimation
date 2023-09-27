@@ -8,14 +8,12 @@ part 'advertisement.g.dart';
 
 @JsonSerializable()
 class Advertisement extends BaseEntity {
-
-  final int id;
   final String name;
   final Category? category;
   final Spe? spe;
 
   const Advertisement({
-    required this.id,
+    required super.id,
     required this.name,
     required this.category,
     required this.spe,
@@ -28,10 +26,8 @@ class Advertisement extends BaseEntity {
 
   @override
   bool operator ==(Object other) {
-    return other is Advertisement 
-        && name == other.name
-        && category == other.category
-        && spe == other.spe;
+    return other is Advertisement
+      && other.id == id;
   }
 
   @override
