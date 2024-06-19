@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:bloc/bloc.dart';
+import 'japanimation_app.dart';
 
-import 'modelview/blocobserver.dart';
-import 'japanimationapp.dart';
-
-void main() {
-  Bloc.observer = MyBlocObserver();
-  runApp(const JapanimationApp());
-}
+void main() => runApp(JapanimationApp());

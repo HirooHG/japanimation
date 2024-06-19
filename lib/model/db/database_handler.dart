@@ -1,9 +1,12 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:japanimationbloc/modelview/thing/thing.dart';
+import 'package:japanimationbloc/model/entities/animation_entity.dart';
 import 'dart:io';
+import 'package:japanimationbloc/model/entities/specification.dart';
+import 'package:japanimationbloc/model/entities/category.dart';
 
 class DatabaseHandler {
+  const DatabaseHandler();
 
   final dbname = 'japanimation.db';
 
@@ -12,197 +15,215 @@ class DatabaseHandler {
     return openDatabase(
       join(path, dbname),
       onCreate: (database, version) async {
-        await database.execute(
-          "CREATE TABLE IF NOT EXISTS category ("
+        await database.execute("CREATE TABLE IF NOT EXISTS category ("
             "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
             "name TEXT NOT NULL"
-          ");"
-        );
-        await database.execute(
-          "CREATE TABLE IF NOT EXISTS spe ("
+            ");");
+        await database.execute("CREATE TABLE IF NOT EXISTS spe ("
             "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
             "name TEXT NOT NULL"
-          ");"
-        );
-        await database.execute(
-          "CREATE TABLE IF NOT EXISTS thing ("
+            ");");
+        await database.execute("CREATE TABLE IF NOT EXISTS thing ("
             "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
             "name TEXT NOT NULL,"
             "idCategorie INTEGER NULL,"
-            "idSpe INTEGER NULL,"
+            "idSpeciality INTEGER NULL,"
             "episode INTEGER NULL,"
             "season INTEGER NULL,"
             "chapter INTEGER NULL,"
             "tome INTEGER NULL,"
             "FOREIGN KEY(idCategorie) REFERENCES category(id)"
-            "FOREIGN KEY(idSpe) REFERENCES spe(id)"
-          ");"
-        );
+            "FOREIGN KEY(idSpeciality) REFERENCES spe(id)"
+            ");");
       },
       version: 1,
     );
   }
+
   Future<void> deleteDatabase() async {
     String path = await getDatabasesPath();
     await File(join(path, dbname)).delete();
   }
 
-  Future createTableSpe() async {
+  Future createTableSpeciality() async {
     final db = await initializeDB();
-    await db.execute(
-      "CREATE TABLE IF NOT EXISTS spe ("
+    await db.execute("CREATE TABLE IF NOT EXISTS spe ("
         "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
         "name TEXT NOT NULL"
-      ");"
-    );
+        ");");
   }
+
   Future createTableCategory() async {
     var db = await initializeDB();
-    await db.execute(
-      "CREATE TABLE IF NOT EXISTS category ("
+    await db.execute("CREATE TABLE IF NOT EXISTS category ("
         "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
         "name TEXT NOT NULL"
-      ");"
-    );
+        ");");
   }
+
   Future createTableThing() async {
     var db = await initializeDB();
-    await db.execute(
-      "CREATE TABLE IF NOT EXISTS thing ("
+    await db.execute("CREATE TABLE IF NOT EXISTS thing ("
         "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
         "name TEXT NOT NULL,"
         "idCategorie INTEGER NULL,"
-        "idSpe INTEGER NULL,"
+        "idSpeciality INTEGER NULL,"
         "episode INTEGER NULL,"
         "season INTEGER NULL,"
         "chapter INTEGER NULL,"
         "tome INTEGER NULL,"
         "FOREIGN KEY(idCategorie) REFERENCES category(id)"
-        "FOREIGN KEY(idSpe) REFERENCES spe(id)"
-      ");"
-    );
+        "FOREIGN KEY(idSpeciality) REFERENCES spe(id)"
+        ");");
   }
+
   Future deleteTableCategory() async {
     var db = await initializeDB();
     await db.execute("DROP TABLE IF EXISTS category");
   }
+
   Future deleteTableThing() async {
     var db = await initializeDB();
     await db.execute("DROP TABLE IF EXISTS thing");
   }
-  Future deleteTableSpe() async {
+
+  Future deleteTableSpeciality() async {
     var db = await initializeDB();
     await db.execute("DROP TABLE IF EXISTS spe");
   }
 
-  Future insertSpe(Spe spe) async {
+  Future insertSpeciality(Specification spe) async {
     var db = await initializeDB();
-    await db.insert('spe', spe.toMap());
+    await db.insert('spe', spe.toJson());
   }
-  Future updateSpe(Spe spe) async {
+
+  Future updateSpeciality(Specification spe) async {
     var db = await initializeDB();
-    await db.update('spe', spe.toMap(), where: 'id = ?', whereArgs: [spe.id]);
+    await db.update('spe', spe.toJson(), where: 'id = ?', whereArgs: [spe.id]);
   }
-  Future deleteSpe(Spe spe) async {
+
+  Future deleteSpeciality(Specification spe) async {
     var db = await initializeDB();
     await db.delete('spe', where: 'id = ?', whereArgs: [spe.id]);
   }
-  Future deleteAllSpe() async {
+
+  Future deleteAllSpeciality() async {
     var db = await initializeDB();
     await db.delete('spe');
   }
-  Future<List<Spe>> getAllSpe() async {
+
+  Future<List<Specification>> getAllSpe() async {
     var db = await initializeDB();
     var result = await db.query('spe');
-    return result.map((e) => Spe.fromBdd(e)).toList();
-  }
-  Future<Spe> getSpeFromName(String name) async {
-    var db = await initializeDB();
-    var result = await db.query('spe', where: 'name = ?', whereArgs: [name]);
-    return Spe.fromBdd(result.first);
-  }
-  Future getSpeFromId(int id) async {
-    var db = await initializeDB();
-    var result = await db.query('spe', where: 'id = ?', whereArgs: [id]);
-    return Spe.fromBdd(result.first);
+    return result.map((e) => Specification.fromJson(e)).toList();
   }
 
-  Future<void> insertThing(Thing thing) async {
+  Future<Specification> getSpeFromName(String name) async {
     var db = await initializeDB();
-    db.insert('thing', thing.toMap());
+    var result = await db.query('spe', where: 'name = ?', whereArgs: [name]);
+    return Specification.fromJson(result.first);
   }
-  Future<void> updateThing(Thing thing) async {
+
+  Future getSpecialityFromId(int id) async {
     var db = await initializeDB();
-    db.update('thing', thing.toMap(), where: 'id = ?', whereArgs: [thing.id]);
+    var result = await db.query('spe', where: 'id = ?', whereArgs: [id]);
+    return Specification.fromJson(result.first);
   }
-  Future<void> deleteThing(Thing thing) async {
+
+  Future<void> insertThing(AnimationEntity thing) async {
+    var db = await initializeDB();
+    db.insert('thing', thing.toJson());
+  }
+
+  Future<void> updateThing(AnimationEntity thing) async {
+    var db = await initializeDB();
+    db.update('thing', thing.toJson(), where: 'id = ?', whereArgs: [thing.id]);
+  }
+
+  Future<void> deleteThing(AnimationEntity thing) async {
     var db = await initializeDB();
     db.delete('thing', where: 'id = ?', whereArgs: [thing.id]);
   }
+
   Future<void> deleteAllThing() async {
     var db = await initializeDB();
     db.delete('thing');
   }
-  Future<List<Thing>> getThings() async {
+
+  Future<List<AnimationEntity>> getThings() async {
     var db = await initializeDB();
     var things = await db.query('thing');
     return List.generate(things.length, (i) {
-      return Thing.fromBdd(things[i]);
+      return AnimationEntity.fromJson(things[i]);
     });
   }
-  Future<List<Thing>> getThingsFromIdCategorie(int categorieId) async {
+
+  Future<List<AnimationEntity>> getThingsFromIdCategorie(
+      int categorieId) async {
     var db = await initializeDB();
-    var things = await db.query('thing', where: 'categorie_id = ?', whereArgs: [categorieId]);
+    var things = await db
+        .query('thing', where: 'categorie_id = ?', whereArgs: [categorieId]);
     return List.generate(things.length, (i) {
-      return Thing.fromBdd(things[i]);
+      return AnimationEntity.fromJson(things[i]);
     });
   }
-  Future<List<Thing>> getThingsFromName(String name) async {
+
+  Future<List<AnimationEntity>> getThingsFromName(String name) async {
     var db = await initializeDB();
     var things = await db.query('thing', where: 'name = ?', whereArgs: [name]);
     return List.generate(things.length, (i) {
-      return Thing.fromBdd(things[i]);
+      return AnimationEntity.fromJson(things[i]);
     });
   }
-  Future<Thing> getThingFromId(int id) async {
+
+  Future<AnimationEntity> getThingFromId(int id) async {
     var db = await initializeDB();
     var things = await db.query('thing', where: 'id = ?', whereArgs: [id]);
-    return Thing.fromBdd(things[0]);
+    return AnimationEntity.fromJson(things[0]);
   }
 
   Future<void> insertCategory(Category category) async {
     var db = await initializeDB();
-    db.insert('category', category.toMap());
+    db.insert('category', category.toJson());
   }
+
   Future<void> updateCategory(Category category) async {
     var db = await initializeDB();
-    db.update('category', category.toMap(), where: 'id = ?', whereArgs: [category.id]);
+    db.update('category', category.toJson(),
+        where: 'id = ?', whereArgs: [category.id]);
   }
+
   Future<void> deleteCategory(Category category) async {
     var db = await initializeDB();
     db.delete('category', where: 'id = ?', whereArgs: [category.id]);
   }
+
   Future<void> deleteAllCategory() async {
     var db = await initializeDB();
     db.delete('category');
   }
+
   Future<List<Category>> getCategories() async {
     var db = await initializeDB();
     var categories = await db.query('category');
     return List.generate(categories.length, (i) {
-      return Category.fromBdd(categories[i]);
+      return Category.fromJson(categories[i]);
     });
   }
+
   Future<List<Category>> getCategoryFromName(String name) async {
     var db = await initializeDB();
-    var categories = await db.query('category', where: 'name = ?', whereArgs: [name]);
+    var categories =
+        await db.query('category', where: 'name = ?', whereArgs: [name]);
     return List.generate(categories.length, (i) {
-      return Category.fromBdd(categories[i]);
+      return Category.fromJson(categories[i]);
     });
   }
+
   Future<Category> getCategoryFromId(int id) async {
     var db = await initializeDB();
-    var categories = await db.query('category', where: 'id = ?', whereArgs: [id]);
-    return Category.fromBdd(categories[0]);
+    var categories =
+        await db.query('category', where: 'id = ?', whereArgs: [id]);
+    return Category.fromJson(categories[0]);
   }
 }
