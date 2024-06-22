@@ -43,6 +43,9 @@ dependencies:
   build_runner: ^2.4.11
   json_annotation: ^4.9.0
   json_serializable: ^6.8.0
+  shimmer: ^3.0.0
+  uuid: ^4.4.0
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:

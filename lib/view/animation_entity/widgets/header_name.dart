@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:japanimationbloc/controller/bloc/main_bloc.dart';
-import 'package:japanimationbloc/controller/bloc/state.dart';
+import 'package:japanimationbloc/controller/cubit/current_animation_entity_cubit.dart';
+import 'package:japanimationbloc/model/entities/animation_entity.dart';
 
 class HeaderName extends StatelessWidget {
   const HeaderName({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainBloc, MainState>(builder: (context, state) {
+    return BlocBuilder<CurrentAnimationEntityCubit, AnimationEntity>(
+        builder: (context, animationEntity) {
       return Container(
           width: double.infinity,
           margin: const EdgeInsets.symmetric(vertical: 20),
           constraints: const BoxConstraints(minHeight: 150),
           child: Center(
-            child: Container(
-              padding: const EdgeInsets.only(left: 20),
+            child: SizedBox(
               width: double.infinity,
               child: Text(
-                state.currentThing.name,
+                animationEntity.name,
                 textAlign: TextAlign.start,
                 style: const TextStyle(
                     fontSize: 30,

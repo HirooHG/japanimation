@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:japanimationbloc/controller/bloc/main_bloc.dart';
-import 'package:japanimationbloc/controller/bloc/state.dart';
-import 'package:japanimationbloc/controller/cubit/japancubit.dart';
+import 'package:japanimationbloc/controller/bloc/bloc.dart';
+import 'package:japanimationbloc/controller/cubit/current_category_cubit.dart';
+import 'package:japanimationbloc/controller/cubit/search_cubit.dart';
+import 'package:japanimationbloc/model/entities/category.dart';
 import 'package:japanimationbloc/view/animation_entities/animation_entities_view.dart';
 
 class FilteredListButton extends StatelessWidget {
@@ -10,15 +11,12 @@ class FilteredListButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainBloc, MainState>(builder: (_, state) {
+    return BlocBuilder<CurrentCategoryCubit, Category?>(builder: (_, state) {
       return Padding(
         padding: const EdgeInsets.only(left: 20),
         child: Row(
           children: [
-            Text(
-                (state.currentCategory.name == '')
-                    ? "All"
-                    : state.currentCategory.name,
+            Text((state != null) ? state.name : "All",
                 style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -32,10 +30,13 @@ class FilteredListButton extends StatelessWidget {
                     BlocProvider<MainBloc>.value(
                       value: BlocProvider.of<MainBloc>(context),
                     ),
-                    BlocProvider<ModifyJapanCubit>.value(
-                      value: BlocProvider.of<ModifyJapanCubit>(context),
+                    BlocProvider<CurrentCategoryCubit>.value(
+                      value: BlocProvider.of<CurrentCategoryCubit>(context),
                     ),
-                  ], child: AnimationEntitiesView());
+                    BlocProvider.value(
+                      value: BlocProvider.of<SearchCubit>(context),
+                    ),
+                  ], child: const AnimationEntitiesView());
                 }));
               },
             )

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:japanimationbloc/view/animation_entities/widgets/animation_entities_list.dart';
+import 'package:gap/gap.dart';
+import 'package:japanimationbloc/controller/cubit/current_specification_cubit.dart';
 import 'package:japanimationbloc/view/animation_entities/widgets/header_name_category.dart';
 import 'package:japanimationbloc/view/animation_entities/widgets/search_field.dart';
 import 'package:japanimationbloc/view/animation_entities/widgets/specifications_list.dart';
-import 'package:japanimationbloc/view/home/widgets/floating_button.dart';
-
-import 'package:japanimationbloc/controller/bloc/main_bloc.dart';
-import 'package:japanimationbloc/controller/cubit/japancubit.dart';
+import 'package:japanimationbloc/view/shared/floating_button.dart';
+import 'package:japanimationbloc/view/shared/list_animation_entities.dart';
 
 class AnimationEntitiesView extends StatelessWidget {
   const AnimationEntitiesView({super.key});
@@ -16,11 +15,11 @@ class AnimationEntitiesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: MultiBlocProvider(providers: [
-          BlocProvider.value(value: BlocProvider.of<ModifyJapanCubit>(context)),
-          BlocProvider.value(value: BlocProvider.of<MainBloc>(context))
-        ], child: const FloatingButtons(tag: "thingview")),
-        body: SafeArea(
+        floatingActionButton: const FloatingButton(
+          tag: "animation_entities_view",
+        ),
+        body: BlocProvider(
+          create: (context) => CurrentSpecificationCubit(),
           child: Container(
             color: const Color(0xFF1a1a1a),
             child: const Column(
@@ -28,8 +27,10 @@ class AnimationEntitiesView extends StatelessWidget {
                 Column(
                   children: [HeaderNameCategory(), SpecificationsList()],
                 ),
+                Gap(10),
                 SearchField(),
-                AnimationEntitiesList()
+                Gap(10),
+                ListAnimationEntities()
               ],
             ),
           ),

@@ -1,0 +1,5 @@
+v1.0.0
+- List, create, remove, update and get details of all the animation entities
+- Create and filter animations by categories (animes, movies, etc.)
+- & specification (already seen, to watch, etc.)
+- filter by name with search area

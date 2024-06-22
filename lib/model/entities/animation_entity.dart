@@ -1,14 +1,17 @@
+import 'package:japanimationbloc/model/entities/base_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'animation_entity.g.dart';
 
 @JsonSerializable()
-class AnimationEntity {
+class AnimationEntity extends BaseEntity {
+  final int? id;
+
   String name;
 
-  int? id;
-  int? idCategorie;
-  int? idSpe;
+  int? category;
+  int? specification;
   int? episode;
   int? season;
   int? chapter;
@@ -16,29 +19,40 @@ class AnimationEntity {
 
   AnimationEntity({
     required this.name,
-    this.idCategorie,
-    this.idSpe,
+    required super.identifier,
     this.id,
+    this.category,
+    this.specification,
     this.episode,
     this.season,
     this.chapter,
     this.tome,
   });
 
-  AnimationEntity.empty() : this(name: '');
+  AnimationEntity.empty({required this.name})
+      : id = null,
+        category = null,
+        specification = null,
+        episode = null,
+        season = null,
+        chapter = null,
+        tome = null,
+        super(identifier: const Uuid().v4().toString());
+
   factory AnimationEntity.fromJson(Map<String, dynamic> map) =>
       _$AnimationEntityFromJson(map);
 
+  @override
+  String get className => 'animationEntity';
+
+  @override
   Map<String, Object?> toJson() => _$AnimationEntityToJson(this);
 
   @override
   bool operator ==(Object other) {
-    return name == (other as AnimationEntity).name &&
-        idCategorie == other.idCategorie &&
-        episode == other.episode &&
-        season == other.season &&
-        chapter == other.chapter &&
-        tome == other.tome &&
-        idSpe == other.idSpe;
+    return other is AnimationEntity && other.identifier == identifier;
   }
+
+  @override
+  int get hashCode => identifier.hashCode;
 }

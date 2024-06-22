@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:japanimationbloc/controller/cubit/search_cubit.dart';
 
 class SearchField extends StatelessWidget {
   const SearchField({super.key});
@@ -17,7 +19,7 @@ class SearchField extends StatelessWidget {
             cursorColor: const Color(0xFF42d392),
             style: const TextStyle(fontFamily: "Ubuntu"),
             onChanged: (value) {
-              // TODO: implement cubit search
+              BlocProvider.of<SearchCubit>(context).set(value);
             },
             decoration: const InputDecoration(
                 labelText: "Search",

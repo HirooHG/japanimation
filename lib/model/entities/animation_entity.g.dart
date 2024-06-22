@@ -9,9 +9,10 @@ part of 'animation_entity.dart';
 AnimationEntity _$AnimationEntityFromJson(Map<String, dynamic> json) =>
     AnimationEntity(
       name: json['name'] as String,
-      idCategorie: (json['idCategorie'] as num?)?.toInt(),
-      idSpe: (json['idSpe'] as num?)?.toInt(),
+      identifier: json['identifier'] as String,
       id: (json['id'] as num?)?.toInt(),
+      category: (json['category'] as num?)?.toInt(),
+      specification: (json['specification'] as num?)?.toInt(),
       episode: (json['episode'] as num?)?.toInt(),
       season: (json['season'] as num?)?.toInt(),
       chapter: (json['chapter'] as num?)?.toInt(),
@@ -20,10 +21,11 @@ AnimationEntity _$AnimationEntityFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$AnimationEntityToJson(AnimationEntity instance) =>
     <String, dynamic>{
+      'identifier': instance.identifier,
       'name': instance.name,
       'id': instance.id,
-      'idCategorie': instance.idCategorie,
-      'idSpe': instance.idSpe,
+      'category': instance.category,
+      'specification': instance.specification,
       'episode': instance.episode,
       'season': instance.season,
       'chapter': instance.chapter,
